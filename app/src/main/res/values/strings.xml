@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MyCastleNotYours</string>
+    <string name="title">My Castle Not Yours</string>
+    <string name="start_button">Start</string>
+    <string name="start_toast">This button begins the game.
+        It does so by removing the button and starting the moving animation for the stick figures.</string>
+</resources>
