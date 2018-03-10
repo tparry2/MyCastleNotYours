@@ -1,8 +1,0 @@
-for alpha:
-
-create gameplay activity
-	make arrow clickable
-	make rectangle move across the screen (optional but recommended)
-	drawable canvas instead of background
-
-High Score button
