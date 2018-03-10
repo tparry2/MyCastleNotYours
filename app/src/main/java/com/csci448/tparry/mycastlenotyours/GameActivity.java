@@ -63,7 +63,7 @@ public class GameActivity extends AppCompatActivity {
     public Dialog onCreateHighScoreDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
-        builder.setMessage("High Scores: "
+        builder.setMessage("Scores: "
         + "\nYour Score: " + Integer.toString(enemiesKilled)
         + "\nHigh Score: " + "9999999999")
                 .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
