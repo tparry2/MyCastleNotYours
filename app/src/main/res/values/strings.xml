@@ -4,4 +4,10 @@
     <string name="start_button">Start</string>
     <string name="start_toast">This button begins the game.
         It does so by removing the button and starting the moving animation for the stick figures.</string>
+    <string name="bow_toast">Upon clicking the bow, the game will shoot an arrow at a specified angle.</string>
+    <string name="score_text">Score:</string>
+    <string name="high_score">High Scores</string>
+    <string name="game_over">Game Over!</string>
+    <string name="ok_button">OK</string>
+    <string name="exit">Exit</string>
 </resources>
