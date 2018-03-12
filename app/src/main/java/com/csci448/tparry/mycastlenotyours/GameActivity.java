@@ -60,7 +60,6 @@ public class GameActivity extends AppCompatActivity {
 
 
     public Dialog createHighScoreDialog() {
-        // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
         builder.setMessage("Scores: "
         + "\nYour Score: " + Integer.toString(enemiesKilled)
@@ -70,12 +69,10 @@ public class GameActivity extends AppCompatActivity {
                         finish();
                     }
                 });
-        // Create the AlertDialog object and return it
         return builder.create();
     }
 
     public Dialog createGameOverDialog() {
-        // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
         builder.setMessage(R.string.game_over)
                 .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
@@ -83,7 +80,6 @@ public class GameActivity extends AppCompatActivity {
 
                     }
                 });
-        // Create the AlertDialog object and return it
         return builder.create();
     }
 }

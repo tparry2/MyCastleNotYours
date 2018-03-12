@@ -55,13 +55,11 @@ public class TitleActivity extends AppCompatActivity {
     }
 
     public Dialog createHighScoreDialog() {
-        // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(TitleActivity.this);
         builder.setMessage("High Score: " + "9999999999")
                 .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {}
                 });
-        // Create the AlertDialog object and return it
         return builder.create();
     }
 }
