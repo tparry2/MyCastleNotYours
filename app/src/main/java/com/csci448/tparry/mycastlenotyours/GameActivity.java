@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,10 +48,10 @@ public class GameActivity extends AppCompatActivity {
         mGameOverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dialog highScoreDialog = onCreateHighScoreDialog(savedInstanceState);
+                Dialog highScoreDialog = createHighScoreDialog();
                 highScoreDialog.show();
 
-                Dialog gameOverDialog = onCreateGameOverDialog(savedInstanceState);
+                Dialog gameOverDialog = createGameOverDialog();
                 gameOverDialog.show();
             }
         });
@@ -60,7 +59,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
-    public Dialog onCreateHighScoreDialog(Bundle savedInstanceState) {
+    public Dialog createHighScoreDialog() {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
         builder.setMessage("Scores: "
@@ -75,7 +74,7 @@ public class GameActivity extends AppCompatActivity {
         return builder.create();
     }
 
-    public Dialog onCreateGameOverDialog(final Bundle savedInstanceState) {
+    public Dialog createGameOverDialog() {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
         builder.setMessage(R.string.game_over)
