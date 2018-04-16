@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,8 +23,6 @@ public class GameActivity extends AppCompatActivity {
     private TextView mHealthTextView;
     private int healthRemaining = TOTAL_HEALTH;
 
-    private Button mGameOverButton;
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +32,10 @@ public class GameActivity extends AppCompatActivity {
         mScoreTextView.setText("Score: " + Integer.toString(enemiesKilled));
 
         mBowButton = (ImageView) findViewById(R.id.arrow_button);
+        //mBowButton.setOnTouchListener();
+
+
+        }
         mBowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,18 +46,6 @@ public class GameActivity extends AppCompatActivity {
 
         mHealthTextView = (TextView) findViewById(R.id.health_textview);
         mHealthTextView.setText("Health: " + Integer.toString(healthRemaining) + "/" + Integer.toString(TOTAL_HEALTH));
-
-        mGameOverButton = (Button) findViewById(R.id.game_over_button);
-        mGameOverButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Dialog highScoreDialog = createHighScoreDialog();
-                highScoreDialog.show();
-
-                Dialog gameOverDialog = createGameOverDialog();
-                gameOverDialog.show();
-            }
-        });
 
     }
 
@@ -82,4 +73,6 @@ public class GameActivity extends AppCompatActivity {
                 });
         return builder.create();
     }
+
+
 }
