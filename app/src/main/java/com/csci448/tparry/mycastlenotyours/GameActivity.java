@@ -142,7 +142,7 @@ public class GameActivity extends AppCompatActivity {
         Log.i("GameActivity", "releaseArrow() called");
         ImageView arrowImage = (ImageView) findViewById(R.id.arrow);
 
-        float acc = -10;
+        float acc = 10;
         float deltaY = y2 - y1;
         float avgY = (y1 + y2) / 2;
         float deltaX = x2 - x1;
@@ -150,7 +150,8 @@ public class GameActivity extends AppCompatActivity {
         float magnitude = (float) Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
         float angle = (float) Math.toDegrees(Math.atan(deltaY / deltaX));
 
-        float time =  2 * ((-1) * deltaY / acc);
+        float time =  2 * (deltaY / acc);
+        long animTime = (long) time * 1000;
         float endX = deltaX * time;
 
         // trajectory: y = (tan(angle)*x) - ((9.81 / (2 * deltaX * deltaX)) * x^2)
@@ -158,10 +159,10 @@ public class GameActivity extends AppCompatActivity {
 
         int abs    = ArcTranslateAnimation.ABSOLUTE;
 
-        ArcTranslateAnimation arcAnim = new ArcTranslateAnimation(
-                abs, endX, abs, avgX, abs, avgY - 25, abs, avgY);
+        ArcTranslateAnimation arcAnim = new ArcTranslateAnimation(0, -endX, 0, avgY - 25);
 
-        arcAnim.setDuration(3000000);
+
+        arcAnim.setDuration(-animTime);
         arcAnim.setFillAfter(true);
         System.out.print(arcAnim);
 
