@@ -28,9 +28,6 @@ public class TitleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TitleActivity.this, GameActivity.class);
-                Toast toast = Toast.makeText(getApplicationContext(), R.string.start_toast, Toast.LENGTH_LONG);
-                toast.show();
-
                 startActivity(i);
             }
         });
