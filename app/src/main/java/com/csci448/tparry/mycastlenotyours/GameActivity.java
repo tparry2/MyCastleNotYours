@@ -150,19 +150,19 @@ public class GameActivity extends AppCompatActivity {
         float magnitude = (float) Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
         float angle = (float) Math.toDegrees(Math.atan(deltaY / deltaX));
 
-        float time =  2 * (deltaY / acc);
-        long animTime = (long) time * 1000;
-        float endX = deltaX * time;
+        float time =  2000 * (Math.abs(deltaY) / acc);
+        long animTime = (long) time;
+        float endX = Math.abs(deltaX) * time;
 
         // trajectory: y = (tan(angle)*x) - ((9.81 / (2 * deltaX * deltaX)) * x^2)
         // calculate arrow path, detect collision(separate function to handle hitting a stick figure)
 
         int abs    = ArcTranslateAnimation.ABSOLUTE;
 
-        ArcTranslateAnimation arcAnim = new ArcTranslateAnimation(0, -endX, 0, avgY - 25);
+        ArcTranslateAnimation arcAnim = new ArcTranslateAnimation(0, -endX / 1000, 0, avgY - 25);
 
 
-        arcAnim.setDuration(-animTime);
+        arcAnim.setDuration(3000);
         arcAnim.setFillAfter(true);
         System.out.print(arcAnim);
 

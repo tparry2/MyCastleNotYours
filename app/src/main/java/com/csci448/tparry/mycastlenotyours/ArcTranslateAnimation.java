@@ -28,6 +28,9 @@ public class ArcTranslateAnimation extends Animation {
     private PointF mControl;
     private PointF mEnd;
 
+    private float mMagnitude;
+    private float mAngle;
+
     /**
      * Constructor to use when building a ArcTranslateAnimation from code
      *
@@ -104,6 +107,12 @@ public class ArcTranslateAnimation extends Animation {
         mToYType = toYType;
     }
 
+    public ArcTranslateAnimation(float magnitude, float angle, PointF start) {
+        mMagnitude = magnitude;
+        mAngle = angle;
+        mStart = start;
+    }
+
     @Override
     protected void applyTransformation(float interpolatedTime, Transformation t) {
         float dx = calcBezier(interpolatedTime, mStart.x, mControl.x, mEnd.x);
@@ -123,7 +132,7 @@ public class ArcTranslateAnimation extends Animation {
 
         mStart = new PointF(mFromXDelta, mFromYDelta);
         mEnd = new PointF(mToXDelta, mToYDelta);
-        mControl = new PointF(mFromXDelta, mToYDelta); // How to choose the
+        mControl = new PointF((mFromXDelta+mToXDelta) / 2, -mToYDelta * 3); // How to choose the
         // Control point(we can
         // use the cross of the
         // two tangents from p0,
