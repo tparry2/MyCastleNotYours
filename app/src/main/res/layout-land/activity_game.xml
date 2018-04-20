@@ -63,8 +63,13 @@
             android:layout_gravity="right|center"
             android:src="@drawable/bow_and_arrow" />
 
-    </FrameLayout>
+        <ImageView
+            android:id="@+id/arrow"
+            android:layout_width="75dp"
+            android:layout_height="50dp"
+            android:layout_gravity="right|center"
+            android:src="@drawable/arrow_in_flight"/>
 
-    
+    </FrameLayout>
     
 </LinearLayout>
