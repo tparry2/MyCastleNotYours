@@ -70,8 +70,10 @@
         <ImageView
             android:layout_width="75dp"
             android:layout_height="50dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginRight="62dp"
             android:layout_gravity="right|center"
-            android:src="@drawable/bow_and_arrow" />
+            android:src="@drawable/catapult_" />
 
     </FrameLayout>
 

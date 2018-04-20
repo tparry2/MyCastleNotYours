@@ -68,7 +68,7 @@ public class GameActivity extends AppCompatActivity {
         mArrowImage = (ImageView) findViewById(R.id.arrow);
         //mArrowImage.setVisibility(View.INVISIBLE);
 
-        mBowButton = (ImageView) findViewById(R.id.arrow_button);
+        mBowButton = (ImageView) findViewById(R.id.catapult_img);
         mBowButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -152,14 +152,14 @@ public class GameActivity extends AppCompatActivity {
 
         float time =  2000 * (Math.abs(deltaY) / acc);
         long animTime = (long) time;
-        float endX = Math.abs(deltaX) * time;
+        float endX = -Math.abs(deltaX) * time;
 
         // trajectory: y = (tan(angle)*x) - ((9.81 / (2 * deltaX * deltaX)) * x^2)
         // calculate arrow path, detect collision(separate function to handle hitting a stick figure)
 
         int abs    = ArcTranslateAnimation.ABSOLUTE;
 
-        ArcTranslateAnimation arcAnim = new ArcTranslateAnimation(0, -endX / 1000, 0, avgY - 25);
+        ArcTranslateAnimation arcAnim = new ArcTranslateAnimation(0, endX / 1000, 0, avgY - 25);
 
 
         arcAnim.setDuration(3000);

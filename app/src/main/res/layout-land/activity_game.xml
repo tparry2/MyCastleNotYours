@@ -57,18 +57,22 @@
             android:src="@drawable/castle" />
 
         <ImageView
-            android:id="@+id/arrow_button"
+            android:id="@+id/catapult_img"
             android:layout_width="75dp"
             android:layout_height="50dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginRight="62dp"
             android:layout_gravity="right|center"
-            android:src="@drawable/bow_and_arrow" />
+            android:src="@drawable/catapult_" />
 
         <ImageView
             android:id="@+id/arrow"
             android:layout_width="75dp"
             android:layout_height="50dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginRight="62dp"
             android:layout_gravity="right|center"
-            android:src="@drawable/arrow_in_flight"/>
+            android:src="@drawable/cannonball"/>
 
     </FrameLayout>
     
