@@ -150,7 +150,7 @@ public class GameActivity extends AppCompatActivity {
         float magnitude = (float) Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
         float angle = (float) Math.toDegrees(Math.atan(deltaY / deltaX));
 
-        float time =  2000 * (Math.abs(deltaY) / acc);
+        float time =  2 * (Math.abs(deltaY) / acc);
         float endX = -Math.abs(deltaX) * time;
 
         // trajectory: y = (tan(angle)*x) - ((9.81 / (2 * deltaX * deltaX)) * x^2)
@@ -158,10 +158,10 @@ public class GameActivity extends AppCompatActivity {
 
         int abs    = ArcTranslateAnimation.ABSOLUTE;
 
-        ArcTranslateAnimation arcAnim = new ArcTranslateAnimation(0, endX / 1000, 0, avgY - 25);
+        ArcTranslateAnimation arcAnim = new ArcTranslateAnimation(0, endX / 30, 0, 275);
+        Log.i("GameActivity", "deltaX = " + deltaX + " deltaY = " + deltaY + " endX = " + endX);
 
-
-        arcAnim.setDuration((long) time/4);
+        arcAnim.setDuration((long) time*50);
         arcAnim.setFillAfter(true);
         System.out.print(arcAnim);
 
