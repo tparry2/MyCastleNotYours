@@ -158,7 +158,7 @@ public class GameActivity extends AppCompatActivity {
 
         int abs    = ArcTranslateAnimation.ABSOLUTE;
 
-        ArcTranslateAnimation arcAnim = new ArcTranslateAnimation(0, endX / 30, 0, 275);
+        ArcTranslateAnimation arcAnim = new ArcTranslateAnimation(0, endX / 30, 0, 225);
         Log.i("GameActivity", "deltaX = " + deltaX + " deltaY = " + deltaY + " endX = " + endX);
 
         arcAnim.setDuration((long) time*50);
