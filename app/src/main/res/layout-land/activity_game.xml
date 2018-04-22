@@ -84,4 +84,10 @@
         android:layout_marginRight="62dp"
         android:layout_gravity="right|bottom"
         android:src="@drawable/cannonball"/>
+
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="100dp"
+        android:layout_gravity="bottom"
+        android:src="@drawable/tyrannosaurus"/>
 </FrameLayout>
