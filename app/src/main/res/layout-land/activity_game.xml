@@ -86,6 +86,7 @@
         android:src="@drawable/cannonball"/>
 
     <ImageView
+        android:id="@+id/trex"
         android:layout_width="75dp"
         android:layout_height="100dp"
         android:layout_gravity="bottom"

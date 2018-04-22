@@ -28,6 +28,7 @@ public class GameActivity extends AppCompatActivity {
 
     private ImageView mBowButton;
     private ImageView mArrowImage;
+    private ImageView mTRex;
     private TextView mHealthTextView;
     private int healthRemaining = TOTAL_HEALTH;
 
@@ -72,12 +73,15 @@ public class GameActivity extends AppCompatActivity {
         mBowButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                mArrowImage.setVisibility(View.VISIBLE);
+                //mArrowImage.setVisibility(View.VISIBLE);
                 onTouchEvent(event);
                 //mArrowImage.setVisibility(View.INVISIBLE);
                 return false;
             }
         });
+
+        mTRex = (ImageView) findViewById(R.id.trex);
+        moveEnemy(mTRex);
 
         mHealthTextView = (TextView) findViewById(R.id.health_textview);
         mHealthTextView.setText("Health: " + Integer.toString(healthRemaining) + "/" + Integer.toString(TOTAL_HEALTH));
@@ -140,7 +144,6 @@ public class GameActivity extends AppCompatActivity {
 
     public void releaseArrow(float x1, float y1, float x2, float y2){
         Log.i("GameActivity", "releaseArrow() called");
-        ImageView arrowImage = (ImageView) findViewById(R.id.arrow);
 
         float acc = 10;
         float deltaY = y2 - y1;
@@ -156,17 +159,21 @@ public class GameActivity extends AppCompatActivity {
         // trajectory: y = (tan(angle)*x) - ((9.81 / (2 * deltaX * deltaX)) * x^2)
         // calculate arrow path, detect collision(separate function to handle hitting a stick figure)
 
-        int abs    = ArcTranslateAnimation.ABSOLUTE;
-
-        ArcTranslateAnimation arcAnim = new ArcTranslateAnimation(0, endX / 30, 0, 225);
+        ArcTranslateAnimation arcAnim = new ArcTranslateAnimation(0, endX, 0, 225);
         Log.i("GameActivity", "deltaX = " + deltaX + " deltaY = " + deltaY + " endX = " + endX);
 
         arcAnim.setDuration((long) time*50);
-        arcAnim.setFillAfter(true);
-        System.out.print(arcAnim);
+        arcAnim.setFillAfter(false);
 
-        arrowImage.setVisibility(View.VISIBLE);
-        arrowImage.startAnimation(arcAnim);
-        arrowImage.setVisibility(View.INVISIBLE);
+        mArrowImage.setVisibility(View.VISIBLE);
+        mArrowImage.startAnimation(arcAnim);
+    }
+
+    public void moveEnemy(ImageView enemy) {
+        ArcTranslateAnimation arcAnim = new ArcTranslateAnimation(0, 1125, 0, 0);
+        arcAnim.setDuration(10000);
+        arcAnim.setFillAfter(true);
+
+        enemy.startAnimation(arcAnim);
     }
 }
