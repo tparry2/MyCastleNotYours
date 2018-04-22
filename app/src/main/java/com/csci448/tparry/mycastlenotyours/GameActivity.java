@@ -1,7 +1,9 @@
 package com.csci448.tparry.mycastlenotyours;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PointF;
@@ -24,6 +26,7 @@ public class GameActivity extends AppCompatActivity {
     private int TOTAL_HEALTH = 100;
 
     private TextView mScoreTextView;
+    private int mHighScoreInt;
     private int enemiesKilled = 0;
 
     private ImageView mBowButton;
@@ -31,6 +34,9 @@ public class GameActivity extends AppCompatActivity {
     private ImageView mTRex;
     private TextView mHealthTextView;
     private int healthRemaining = TOTAL_HEALTH;
+
+    private SharedPreferences mHighScore;
+    private String mPrefKey = "High_Score";
 
     private float x1;
     private float y1;
@@ -42,40 +48,19 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
-//        SurfaceView surface = (SurfaceView) findViewById(R.id.surface);
-//        surface.getHolder().addCallback(new SurfaceHolder.Callback() {
-//
-//            @Override
-//            public void surfaceCreated(SurfaceHolder holder) {
-//                // Do some drawing when surface is ready
-//                Canvas canvas = holder.lockCanvas();
-//                canvas.drawColor(Color.RED);
-//                holder.unlockCanvasAndPost(canvas);
-//            }
-//
-//            @Override
-//            public void surfaceDestroyed(SurfaceHolder holder) {
-//            }
-//
-//            @Override
-//            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-//            }
-//        });
+        mHighScore = this.getSharedPreferences(mPrefKey, Context.MODE_PRIVATE);
+        mHighScoreInt = mHighScore.getInt(mPrefKey, 0);
 
         mScoreTextView = (TextView) findViewById(R.id.score_textview);
         mScoreTextView.setText("Score: " + Integer.toString(enemiesKilled));
 
         mArrowImage = (ImageView) findViewById(R.id.arrow);
-        //mArrowImage.setVisibility(View.INVISIBLE);
 
         mBowButton = (ImageView) findViewById(R.id.catapult_img);
         mBowButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                //mArrowImage.setVisibility(View.VISIBLE);
                 onTouchEvent(event);
-                //mArrowImage.setVisibility(View.INVISIBLE);
                 return false;
             }
         });
