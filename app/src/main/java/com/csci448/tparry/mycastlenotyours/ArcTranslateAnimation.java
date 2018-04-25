@@ -1,8 +1,12 @@
 package com.csci448.tparry.mycastlenotyours;
 
 import android.graphics.PointF;
+import android.support.constraint.solver.widgets.Rectangle;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 // http://www.math.ubc.ca/~cass/gfx/bezier.html
 
@@ -28,8 +32,8 @@ public class ArcTranslateAnimation extends Animation {
     private PointF mControl;
     private PointF mEnd;
 
-    private float mMagnitude;
-    private float mAngle;
+    private ImageView mObject;
+    private ImageView mObstacle;
 
     /**
      * Constructor to use when building a ArcTranslateAnimation from code
@@ -44,7 +48,7 @@ public class ArcTranslateAnimation extends Animation {
      *            Change in Y coordinate to apply at the end of the animation
      */
     public ArcTranslateAnimation(float fromXDelta, float toXDelta,
-                                 float fromYDelta, float toYDelta) {
+                                 float fromYDelta, float toYDelta, ImageView object, ImageView obstacle) {
         mFromXValue = fromXDelta;
         mToXValue = toXDelta;
         mFromYValue = fromYDelta;
@@ -54,6 +58,9 @@ public class ArcTranslateAnimation extends Animation {
         mToXType = ABSOLUTE;
         mFromYType = ABSOLUTE;
         mToYType = ABSOLUTE;
+
+        mObstacle = obstacle;
+        mObject = object;
     }
 
     /**
@@ -107,16 +114,12 @@ public class ArcTranslateAnimation extends Animation {
         mToYType = toYType;
     }
 
-    public ArcTranslateAnimation(float magnitude, float angle, PointF start) {
-        mMagnitude = magnitude;
-        mAngle = angle;
-        mStart = start;
-    }
-
     @Override
     protected void applyTransformation(float interpolatedTime, Transformation t) {
         float dx = calcBezier(interpolatedTime, mStart.x, mControl.x, mEnd.x);
         float dy = calcBezier(interpolatedTime, mStart.y, mControl.y, mEnd.y);
+
+
 
         t.getMatrix().setTranslate(dx, dy);
     }
@@ -132,7 +135,7 @@ public class ArcTranslateAnimation extends Animation {
 
         mStart = new PointF(mFromXDelta, mFromYDelta);
         mEnd = new PointF(mToXDelta, mToYDelta);
-        mControl = new PointF((mFromXDelta+mToXDelta) / 2, -mToYDelta * 3); // How to choose the
+        mControl = new PointF((mFromXDelta+mToXDelta) / 2, -mToYDelta * Math.abs(mToYDelta)/100); // How to choose the
         // Control point(we can
         // use the cross of the
         // two tangents from p0,

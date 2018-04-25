@@ -3,11 +3,15 @@ package com.csci448.tparry.mycastlenotyours;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.support.constraint.solver.widgets.Rectangle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +20,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,13 +31,18 @@ public class GameActivity extends AppCompatActivity {
 
     private int TOTAL_HEALTH = 100;
 
+    private Button mStartButton;
+
     private TextView mScoreTextView;
     private int mHighScoreInt;
     private int enemiesKilled = 0;
 
     private ImageView mBowButton;
     private ImageView mArrowImage;
+    private Rect mArrowBox = new Rect();
     private ImageView mTRex;
+    private Rect mTRexBox = new Rect();
+
     private TextView mHealthTextView;
     private int healthRemaining = TOTAL_HEALTH;
 
@@ -66,7 +77,6 @@ public class GameActivity extends AppCompatActivity {
         });
 
         mTRex = (ImageView) findViewById(R.id.trex);
-        moveEnemy(mTRex);
 
         mHealthTextView = (TextView) findViewById(R.id.health_textview);
         mHealthTextView.setText("Health: " + Integer.toString(healthRemaining) + "/" + Integer.toString(TOTAL_HEALTH));
@@ -141,24 +151,40 @@ public class GameActivity extends AppCompatActivity {
         float time =  2 * (Math.abs(deltaY) / acc);
         float endX = -Math.abs(deltaX) * time;
 
+
         // trajectory: y = (tan(angle)*x) - ((9.81 / (2 * deltaX * deltaX)) * x^2)
         // calculate arrow path, detect collision(separate function to handle hitting a stick figure)
 
-        ArcTranslateAnimation arcAnim = new ArcTranslateAnimation(0, endX, 0, 225);
+        ArcTranslateAnimation arcAnim = new ArcTranslateAnimation(0, endX, 0, 225, mArrowImage, mTRex);
         Log.i("GameActivity", "deltaX = " + deltaX + " deltaY = " + deltaY + " endX = " + endX);
 
-        arcAnim.setDuration((long) time*50);
+        arcAnim.setDuration((long) time * 250);
         arcAnim.setFillAfter(false);
 
         mArrowImage.setVisibility(View.VISIBLE);
         mArrowImage.startAnimation(arcAnim);
+
+
+        moveEnemy(mTRex);
     }
 
     public void moveEnemy(ImageView enemy) {
-        ArcTranslateAnimation arcAnim = new ArcTranslateAnimation(0, 1125, 0, 0);
-        arcAnim.setDuration(10000);
-        arcAnim.setFillAfter(true);
+        mArrowImage.getHitRect(mArrowBox);
+        mTRex.getHitRect(mTRexBox);
 
-        enemy.startAnimation(arcAnim);
+        int animTime = 10000;
+        for(int i = 0; i < animTime; i++) {
+            Log.i("GameActivity", "in moveEnemy()");
+            TranslateAnimation tRexAnim= new TranslateAnimation(mTRex.getX(), 100, mTRex.getY(), 0);
+            tRexAnim.setDuration(100);
+            tRexAnim.setFillAfter(true);
+
+            enemy.startAnimation(tRexAnim);
+
+            if(mArrowBox.intersect(mTRexBox)) {
+                Toast.makeText(getApplicationContext(), "Hit detected", Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
 }
