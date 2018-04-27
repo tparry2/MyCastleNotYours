@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.constraint.solver.widgets.Rectangle;
@@ -33,13 +34,9 @@ import android.widget.Toast;
 public class GameActivity extends AppCompatActivity {
 
     private Canvas mCanvas;
-    private Paint mPaint;
-    private Paint mPaintText = new Paint(Paint.UNDERLINE_TEXT_FLAG);
     private Bitmap mBitmap;
-    private Rect mRect;
-    private Rect mBounds;
     private static final int OFFSET = 100;
-    private int mOffset = OFFSET
+    private int mOffset = OFFSET;
 
     private int TOTAL_HEALTH = 100;
 
@@ -51,9 +48,9 @@ public class GameActivity extends AppCompatActivity {
 
     private ImageView mBowButton;
     private ImageView mArrowImage;
-    private Rect mArrowBox = new Rect();
+    private RectF mArrowBox = new RectF();
     private ImageView mTRex;
-    private Rect mTRexBox = new Rect();
+    private RectF mTRexBox = new RectF();
 
     private TextView mHealthTextView;
     private int healthRemaining = TOTAL_HEALTH;
@@ -78,6 +75,7 @@ public class GameActivity extends AppCompatActivity {
         mScoreTextView.setText("Score: " + Integer.toString(enemiesKilled));
 
         mArrowImage = (ImageView) findViewById(R.id.arrow);
+        mArrowBox = new RectF(mArrowImage.getX(), mArrowImage.getY(), mArrowImage.getX() + 75, mArrowImage.getY() + 50);
 
         mBowButton = (ImageView) findViewById(R.id.catapult_img);
         mBowButton.setOnTouchListener(new View.OnTouchListener() {
@@ -89,22 +87,51 @@ public class GameActivity extends AppCompatActivity {
         });
 
         mTRex = (ImageView) findViewById(R.id.trex);
+        mTRexBox = new RectF(mTRex.getX(), mTRex.getY(), mTRex.getX() + 75, mTRex.getY() + 100);
 
         mHealthTextView = (TextView) findViewById(R.id.health_textview);
         mHealthTextView.setText("Health: " + Integer.toString(healthRemaining) + "/" + Integer.toString(TOTAL_HEALTH));
+        drawSomething();
+        moveEnemy(mTRex);
 
         // THIS IS WHERE CANVAS CODE STARTS
-        mPaint.setColor(0x13579B);
-        mPaintText.setColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null));
-        mPaintText.setTextSize(70);
+//        mPaint.setColor(0x13579B);
+//        mPaintText = new Paint(Paint.UNDERLINE_TEXT_FLAG);
+//        mPaintText.setColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null));
+//        mPaintText.setTextSize(70);
 
     }
 
-    @Override
-    protected void onResume(){
-        super.onResume();
+//    @Override
+//    protected void onResume(){
+//        super.onResume();
+//
+//        moveEnemy(mTRex);
+//    }
 
-        moveEnemy(mTRex);
+    private void drawSomething() {
+        int vWidth = 1000;
+        int vHeight = 1000;
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.CYAN);
+
+
+        mBitmap = Bitmap.createBitmap(vWidth, vHeight, Bitmap.Config.ARGB_8888);
+        mTRex.setImageBitmap(mBitmap);
+        Log.i("GameActivity", Integer.toString(mBitmap.describeContents()));
+        mArrowImage.setImageBitmap(mBitmap);
+
+        mCanvas = new Canvas(mBitmap);
+        mCanvas.drawBitmap(mBitmap, vHeight, vHeight, paint);
+        //mCanvas.drawRect(mTRexBox, paint);
+
+        //view.invalidate();
+
+    }
+
+    private void collisionDetection() {
+
     }
 
 
@@ -133,30 +160,30 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
-        PointF current = new PointF(event.getX(), event.getY());
-        String action = "";
-
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                if(hasReleasedArrow) {
-                    action = "ACTION_DOWN";
-                    x2 = current.x;
-                    y2 = current.y;
-                }
-                else action = "Not released yet";
-                hasReleasedArrow = false;
-                break;
-
-            case MotionEvent.ACTION_UP:
-                action = "ACTION_UP";
-                x1 = current.x - 1569;
-                y1 = current.y - 790;
-                releaseArrow(x1, y1, x2, y2);
-                hasReleasedArrow = true;
-                break;
-        }
-
-        Log.i("GameActivity", action + " at x=" + current.x + ", y=" + current.y);
+//        PointF current = new PointF(event.getX(), event.getY());
+//        String action = "";
+//
+//        switch (event.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                if(hasReleasedArrow) {
+//                    action = "ACTION_DOWN";
+//                    x2 = current.x;
+//                    y2 = current.y;
+//                }
+//                else action = "Not released yet";
+//                hasReleasedArrow = false;
+//                break;
+//
+//            case MotionEvent.ACTION_UP:
+//                action = "ACTION_UP";
+//                x1 = current.x - 1569;
+//                y1 = current.y - 790;
+//                releaseArrow(x1, y1, x2, y2);
+//                hasReleasedArrow = true;
+//                break;
+//        }
+//
+//        Log.i("GameActivity", action + " at x=" + current.x + ", y=" + current.y);
         return true;
 
     }
@@ -190,25 +217,11 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void moveEnemy(ImageView enemy) {
-        mArrowImage.getHitRect(mArrowBox);
-        mTRex.getHitRect(mTRexBox);
+       // mArrowImage.getHitRect(mArrowBox);
+        //mTRex.getHitRect(mTRexBox);
         TranslateAnimation tRexAnim= new TranslateAnimation(mTRex.getX(), 1000, mTRex.getY(), 0);
         tRexAnim.setDuration(10000);
         enemy.startAnimation(tRexAnim);
-
-        int animTime = 10000;
-//        for(int i = 0; i < animTime; i++) {
-//            Log.i("GameActivity", "in moveEnemy()");
-//
-//            tRexAnim.setDuration(100);
-//            tRexAnim.setFillAfter(true);
-//
-//            enemy.startAnimation(tRexAnim);
-//
-//            if(mArrowBox.intersect(mTRexBox)) {
-//                Toast.makeText(getApplicationContext(), "Hit detected", Toast.LENGTH_SHORT).show();
-//            }
-//        }
 
     }
 }
