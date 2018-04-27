@@ -5,13 +5,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.constraint.solver.widgets.Rectangle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +31,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class GameActivity extends AppCompatActivity {
+
+    private Canvas mCanvas;
+    private Paint mPaint;
+    private Paint mPaintText = new Paint(Paint.UNDERLINE_TEXT_FLAG);
+    private Bitmap mBitmap;
+    private Rect mRect;
+    private Rect mBounds;
+    private static final int OFFSET = 100;
+    private int mOffset = OFFSET
 
     private int TOTAL_HEALTH = 100;
 
@@ -81,6 +93,18 @@ public class GameActivity extends AppCompatActivity {
         mHealthTextView = (TextView) findViewById(R.id.health_textview);
         mHealthTextView.setText("Health: " + Integer.toString(healthRemaining) + "/" + Integer.toString(TOTAL_HEALTH));
 
+        // THIS IS WHERE CANVAS CODE STARTS
+        mPaint.setColor(0x13579B);
+        mPaintText.setColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null));
+        mPaintText.setTextSize(70);
+
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        moveEnemy(mTRex);
     }
 
 
@@ -163,28 +187,28 @@ public class GameActivity extends AppCompatActivity {
 
         mArrowImage.setVisibility(View.VISIBLE);
         mArrowImage.startAnimation(arcAnim);
-
-
-        moveEnemy(mTRex);
     }
 
     public void moveEnemy(ImageView enemy) {
         mArrowImage.getHitRect(mArrowBox);
         mTRex.getHitRect(mTRexBox);
+        TranslateAnimation tRexAnim= new TranslateAnimation(mTRex.getX(), 1000, mTRex.getY(), 0);
+        tRexAnim.setDuration(10000);
+        enemy.startAnimation(tRexAnim);
 
         int animTime = 10000;
-        for(int i = 0; i < animTime; i++) {
-            Log.i("GameActivity", "in moveEnemy()");
-            TranslateAnimation tRexAnim= new TranslateAnimation(mTRex.getX(), 100, mTRex.getY(), 0);
-            tRexAnim.setDuration(100);
-            tRexAnim.setFillAfter(true);
-
-            enemy.startAnimation(tRexAnim);
-
-            if(mArrowBox.intersect(mTRexBox)) {
-                Toast.makeText(getApplicationContext(), "Hit detected", Toast.LENGTH_SHORT).show();
-            }
-        }
+//        for(int i = 0; i < animTime; i++) {
+//            Log.i("GameActivity", "in moveEnemy()");
+//
+//            tRexAnim.setDuration(100);
+//            tRexAnim.setFillAfter(true);
+//
+//            enemy.startAnimation(tRexAnim);
+//
+//            if(mArrowBox.intersect(mTRexBox)) {
+//                Toast.makeText(getApplicationContext(), "Hit detected", Toast.LENGTH_SHORT).show();
+//            }
+//        }
 
     }
 }
