@@ -1,5 +1,6 @@
 package com.csci448.tparry.mycastlenotyours;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -27,8 +28,16 @@ public class GameFragment extends Fragment {
                 FrameLayout.LayoutParams.WRAP_CONTENT);
         //lay.gravity = FrameLayout.Layout
         //lay.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        lay.gravity = Gravity.CENTER;
         lay.setMargins(50,50,50,50);
         b.setLayoutParams(lay);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), StartActivity.class);
+                startActivity(intent);
+            }
+        });
         FrameLayout mContainer = new FrameLayout(getActivity());
         mContainer.addView(v);
         mContainer.addView(b);
