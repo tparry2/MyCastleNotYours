@@ -39,7 +39,7 @@ public class GameActivity extends AppCompatActivity {
     private Rect mRect;
     private Rect mBounds;
     private static final int OFFSET = 100;
-    private int mOffset = OFFSET
+    private int mOffset = OFFSET;
 
     private int TOTAL_HEALTH = 100;
 
