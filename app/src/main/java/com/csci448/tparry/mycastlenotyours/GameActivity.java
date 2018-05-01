@@ -3,38 +3,30 @@ package com.csci448.tparry.mycastlenotyours;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
-import android.graphics.Rect;
+import android.graphics.Path;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.support.constraint.solver.widgets.Rectangle;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class GameActivity extends AppCompatActivity {
 
-    private Canvas mCanvas;
-    private Bitmap mBitmap;
+    private Canvas mTRexCanvas = new Canvas();
+    private Canvas mArrowCanvas = new Canvas();
+    private Bitmap mTRexBitmap;
+    private Bitmap mArrowBitmap;
     private static final int OFFSET = 100;
     private int mOffset = OFFSET;
 
@@ -91,8 +83,8 @@ public class GameActivity extends AppCompatActivity {
 
         mHealthTextView = (TextView) findViewById(R.id.health_textview);
         mHealthTextView.setText("Health: " + Integer.toString(healthRemaining) + "/" + Integer.toString(TOTAL_HEALTH));
-        drawSomething();
-        moveEnemy(mTRex);
+        //drawSomething();
+        //moveEnemy(mTRex);
 
         // THIS IS WHERE CANVAS CODE STARTS
 //        mPaint.setColor(0x13579B);
@@ -112,26 +104,56 @@ public class GameActivity extends AppCompatActivity {
     private void drawSomething() {
         int vWidth = 1000;
         int vHeight = 1000;
+        Path tRexPath = new Path();
+        Path arrowPath = new Path();
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.CYAN);
 
 
-        mBitmap = Bitmap.createBitmap(vWidth, vHeight, Bitmap.Config.ARGB_8888);
-        mTRex.setImageBitmap(mBitmap);
-        Log.i("GameActivity", Integer.toString(mBitmap.describeContents()));
-        mArrowImage.setImageBitmap(mBitmap);
+        //mTRexBitmap = Bitmap.createBitmap(mTRex.getWidth(), mTRex.getHeight(), Bitmap.Config.ARGB_8888);
+        //mArrowBitmap = Bitmap.createBitmap(mArrowImage.getWidth(), mArrowImage.getHeight(), Bitmap.Config.ARGB_8888);
+        //mTRex.setImageBitmap(mTRexBitmap);
+        mTRex.post(new Runnable() {
+            @Override
+            public void run() {
+                mTRex.setImageBitmap(loadBitmapFromView(mTRex, mTRexCanvas));
+            }
+        });
+        tRexPath.moveTo(mTRex.getX() + 200, mTRex.getY());
+        tRexPath.lineTo(mTRex.getX() + 200, mTRex.getY());
+        mArrowImage.post(new Runnable() {
+            @Override
+            public void run() {
+                mArrowImage.setImageBitmap(loadBitmapFromView(mArrowImage, mArrowCanvas));
+            }
+        });
+        mTRexCanvas.drawPath(tRexPath, paint);
+        mTRexCanvas.drawTextOnPath("HERE", tRexPath, 0, 0, paint);
 
-        mCanvas = new Canvas(mBitmap);
-        mCanvas.drawBitmap(mBitmap, vHeight, vHeight, paint);
+        Log.i("GameActivity", "drawSomething()");
+        //mArrowImage.setImageBitmap(mArrowBitmap);
+
+//        mTRexCanvas = new Canvas(mTRexBitmap);
+//        mArrowCanvas = new Canvas(mArrowBitmap);
+//        mTRexCanvas.drawBitmap(mTRexBitmap, 100, 1000, paint);
+//        mArrowCanvas.drawBitmap(mArrowBitmap, 1500, 200, paint);
         //mCanvas.drawRect(mTRexBox, paint);
 
         //view.invalidate();
 
     }
 
-    private void collisionDetection() {
+    public static Bitmap loadBitmapFromView(View v, Canvas c) {
+        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+        c = new Canvas(b);
+        v.layout(0, 0, v.getWidth(), v.getHeight());
+        v.draw(c);
+        return b;
+    }
 
+    private void collisionDetection() {
+        //STUB
     }
 
 
@@ -221,6 +243,7 @@ public class GameActivity extends AppCompatActivity {
         //mTRex.getHitRect(mTRexBox);
         TranslateAnimation tRexAnim= new TranslateAnimation(mTRex.getX(), 1000, mTRex.getY(), 0);
         tRexAnim.setDuration(10000);
+        tRexAnim.setFillAfter(true);
         enemy.startAnimation(tRexAnim);
 
     }
