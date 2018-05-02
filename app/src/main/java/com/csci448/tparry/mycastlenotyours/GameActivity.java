@@ -164,19 +164,21 @@ public class GameActivity extends AppCompatActivity {
         tRexAnim.setDuration(10000);
         enemy.startAnimation(tRexAnim);
 
-        int animTime = 10000;
-//        for(int i = 0; i < animTime; i++) {
-//            Log.i("GameActivity", "in moveEnemy()");
-//
-//            tRexAnim.setDuration(100);
-//            tRexAnim.setFillAfter(true);
-//
-//            enemy.startAnimation(tRexAnim);
-//
-//            if(mArrowBox.intersect(mTRexBox)) {
-//                Toast.makeText(getApplicationContext(), "Hit detected", Toast.LENGTH_SHORT).show();
-//            }
-//        }
+    }
 
+    private void collisionDetected() {
+        // TODO:
+        // bounce TRex back a certain amount
+        // return cannonball to original position
+        // reset TRex path towards castle
+        // increment score
+
+    }
+
+    private void damageCastle() {
+        // TODO:
+        // animate TRex to show damage being done
+        // decrement castle health
+        // if castle health == 0: end game, record score, show game over and score dialogs, return to title screen
     }
 }
