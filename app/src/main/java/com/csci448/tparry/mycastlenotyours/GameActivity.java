@@ -4,8 +4,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,8 +33,10 @@ public class GameActivity extends AppCompatActivity {
     private ImageView mBowButton;
     private ImageView mArrowImage;
     private RectF mArrowBox = new RectF();
+    private Canvas mArrowCanvas = new Canvas();
     private ImageView mTRex;
     private RectF mTRexBox = new RectF();
+    private Canvas mTRexCanvas = new Canvas();
 
     private TextView mHealthTextView;
     private int healthRemaining = TOTAL_HEALTH;
@@ -111,15 +119,7 @@ public class GameActivity extends AppCompatActivity {
         mTRexCanvas.drawTextOnPath("HERE", tRexPath, 0, 0, paint);
 
         Log.i("GameActivity", "drawSomething()");
-        //mArrowImage.setImageBitmap(mArrowBitmap);
 
-//        mTRexCanvas = new Canvas(mTRexBitmap);
-//        mArrowCanvas = new Canvas(mArrowBitmap);
-//        mTRexCanvas.drawBitmap(mTRexBitmap, 100, 1000, paint);
-//        mArrowCanvas.drawBitmap(mArrowBitmap, 1500, 200, paint);
-        //mCanvas.drawRect(mTRexBox, paint);
-
-        //view.invalidate();
 
     }
 
