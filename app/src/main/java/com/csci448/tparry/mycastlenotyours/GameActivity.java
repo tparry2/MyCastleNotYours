@@ -3,47 +3,22 @@ package com.csci448.tparry.mycastlenotyours;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.support.constraint.solver.widgets.Rectangle;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class GameActivity extends AppCompatActivity {
 
-    private Canvas mCanvas;
-    private Paint mPaint;
-    private Paint mPaintText = new Paint(Paint.UNDERLINE_TEXT_FLAG);
-    private Bitmap mBitmap;
-    private Rect mRect;
-    private Rect mBounds;
-    private static final int OFFSET = 100;
-    private int mOffset = OFFSET;
-
     private int TOTAL_HEALTH = 100;
-
-    private Button mStartButton;
 
     private TextView mScoreTextView;
     private int mHighScoreInt;
@@ -92,11 +67,6 @@ public class GameActivity extends AppCompatActivity {
 
         mHealthTextView = (TextView) findViewById(R.id.health_textview);
         mHealthTextView.setText("Health: " + Integer.toString(healthRemaining) + "/" + Integer.toString(TOTAL_HEALTH));
-
-        // THIS IS WHERE CANVAS CODE STARTS
-        mPaint.setColor(0x13579B);
-        mPaintText.setColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null));
-        mPaintText.setTextSize(70);
 
     }
 
@@ -166,9 +136,7 @@ public class GameActivity extends AppCompatActivity {
 
         float acc = 10;
         float deltaY = y2 - y1;
-        float avgY = (y1 + y2) / 2;
         float deltaX = x2 - x1;
-        float avgX = (x1 + x2) / 2;
         float magnitude = (float) Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
         float angle = (float) Math.toDegrees(Math.atan(deltaY / deltaX));
 
