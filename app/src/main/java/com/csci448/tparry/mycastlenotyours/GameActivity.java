@@ -4,12 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.RectF;
+import android.graphics.PointF;
+import android.graphics.Rect;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,22 +13,12 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class GameActivity extends AppCompatActivity {
 
-    private Canvas mTRexCanvas = new Canvas();
-    private Canvas mArrowCanvas = new Canvas();
-    private Bitmap mTRexBitmap;
-    private Bitmap mArrowBitmap;
-    private static final int OFFSET = 100;
-    private int mOffset = OFFSET;
-
     private int TOTAL_HEALTH = 100;
-
-    private Button mStartButton;
 
     private TextView mScoreTextView;
     private int mHighScoreInt;
@@ -85,13 +71,6 @@ public class GameActivity extends AppCompatActivity {
         mHealthTextView.setText("Health: " + Integer.toString(healthRemaining) + "/" + Integer.toString(TOTAL_HEALTH));
         //drawSomething();
         //moveEnemy(mTRex);
-
-        // THIS IS WHERE CANVAS CODE STARTS
-//        mPaint.setColor(0x13579B);
-//        mPaintText = new Paint(Paint.UNDERLINE_TEXT_FLAG);
-//        mPaintText.setColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null));
-//        mPaintText.setTextSize(70);
-
     }
 
 //    @Override
@@ -215,9 +194,7 @@ public class GameActivity extends AppCompatActivity {
 
         float acc = 10;
         float deltaY = y2 - y1;
-        float avgY = (y1 + y2) / 2;
         float deltaX = x2 - x1;
-        float avgX = (x1 + x2) / 2;
         float magnitude = (float) Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
         float angle = (float) Math.toDegrees(Math.atan(deltaY / deltaX));
 
@@ -246,5 +223,21 @@ public class GameActivity extends AppCompatActivity {
         tRexAnim.setFillAfter(true);
         enemy.startAnimation(tRexAnim);
 
+    }
+
+    private void collisionDetected() {
+        // TODO:
+        // bounce TRex back a certain amount
+        // return cannonball to original position
+        // reset TRex path towards castle
+        // increment score
+
+    }
+
+    private void damageCastle() {
+        // TODO:
+        // animate TRex to show damage being done
+        // decrement castle health
+        // if castle health == 0: end game, record score, show game over and score dialogs, return to title screen
     }
 }

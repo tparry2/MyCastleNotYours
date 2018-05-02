@@ -80,8 +80,9 @@
         android:id="@+id/arrow"
         android:layout_width="75dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="85dp"
-        android:layout_marginRight="40dp"
+        android:layout_marginBottom="88dp"
+        android:layout_marginRight="35dp"
+
         android:layout_gravity="right|bottom"
         android:src="@drawable/cannonball"/>
 
