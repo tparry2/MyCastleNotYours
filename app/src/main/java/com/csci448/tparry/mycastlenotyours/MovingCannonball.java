@@ -12,6 +12,8 @@ public class MovingCannonball {
     public int yValue;
     public float xVelocity;
     public float yVelocity;
+    public int initX;
+    public int initY;
 
     public MovingCannonball(Bitmap i) {
         image = i;
@@ -19,5 +21,7 @@ public class MovingCannonball {
         yValue = 0;
         xVelocity = 0;
         yVelocity = 0;
+        initX = 0;
+        initY = 0;
     }
 }

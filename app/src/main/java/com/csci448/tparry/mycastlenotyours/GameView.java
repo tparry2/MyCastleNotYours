@@ -16,12 +16,16 @@ import android.view.View;
  */
 
 public class GameView extends View {
+    //score
+    private int score = 0;
+    private Paint scorePaint;
     private Paint backgroundPaint;
     private Paint groundPaint;
     private float storedX;
     private float storedY;
     private float gravity = 1;
     private boolean pressed = false;
+    private boolean loaded = true;
     //pictures
     private Bitmap castle;
     private Bitmap moon;
@@ -44,6 +48,9 @@ public class GameView extends View {
         backgroundPaint.setColor(getResources().getColor(R.color.colorPrimary));
         groundPaint = new Paint();
         groundPaint.setColor(getResources().getColor(R.color.green));
+        scorePaint = new Paint();
+        scorePaint.setColor(getResources().getColor(R.color.yellow));
+        scorePaint.setTextSize(100);
         //setup bitmaps
         Resources res = getResources();
         castle = BitmapFactory.decodeResource(res, R.drawable.castle);
@@ -51,14 +58,14 @@ public class GameView extends View {
         moon = BitmapFactory.decodeResource(res, R.drawable.moon);
         moon = resizeBitmap(moon, 350, 350);
         catapult = BitmapFactory.decodeResource(res, R.drawable.catapult_);
-        catapult = resizeBitmap(catapult, 60, 100);
+        catapult = resizeBitmap(catapult, 160, 240);
         //dino setup
         Bitmap dinoImage = BitmapFactory.decodeResource(res, R.drawable.tyrannosaurus);
         dinoImage = resizeBitmap(dinoImage, 250, 260);
         dino = new MovingEnemy(dinoImage);
         //cannonball setup
         Bitmap ballImage = BitmapFactory.decodeResource(res, R.drawable.cannonball);
-        ballImage = resizeBitmap(ballImage, 50, 50);
+        ballImage = resizeBitmap(ballImage, 120, 120);
         cannonball = new MovingCannonball(ballImage);
 
         //start animation
@@ -80,7 +87,10 @@ public class GameView extends View {
                 }
             case MotionEvent.ACTION_UP:
                 pressed = false;
-                releaseBow(event.getX(), event.getY());
+                if (loaded) {
+                    loaded = false;
+                    releaseBow(event.getX(), event.getY());
+                }
                 break;
         }
         return true;
@@ -92,6 +102,8 @@ public class GameView extends View {
         //draw background
         canvas.drawRect((float)0.0, (float)0.0, canvas.getWidth(), canvas.getHeight() / 2, backgroundPaint);
         canvas.drawRect((float)0.0, canvas.getHeight() / 2, canvas.getWidth(), canvas.getHeight(), groundPaint);
+        //draw score
+        canvas.drawText("Score: " + String.valueOf(score), 20, 100, scorePaint);
         //draw back objects
         canvas.drawBitmap(castle,canvas.getWidth() - 700, canvas.getHeight()-600, null);
         canvas.drawBitmap(moon, 0, 110, null);
@@ -103,14 +115,38 @@ public class GameView extends View {
         dino.xValue += 5;
         //moving cannonball
         if (cannonball.xValue == 0 && cannonball.yValue == 0) {
-            cannonball.xValue = canvas.getWidth() - 50;
-            cannonball.yValue = canvas.getHeight() - 50;
+            cannonball.xValue = canvas.getWidth() - 360;
+            cannonball.yValue = canvas.getHeight() - 480;
+            cannonball.initY = canvas.getHeight() - 480;
+            cannonball.initX = canvas.getWidth() - 360;
         }
         canvas.drawBitmap(cannonball.image, cannonball.xValue, cannonball.yValue, null);
+        canvas.drawBitmap(catapult, canvas.getWidth() - 490, canvas.getHeight() - 440, null);
         if (cannonball.xVelocity != 0 || cannonball.yVelocity != 0) {
             cannonball.xValue += cannonball.xVelocity;
             cannonball.yValue += cannonball.yVelocity;
             cannonball.yVelocity += gravity;
+        }
+        //check collision
+        if ((cannonball.yValue + 100) > dino.yValue && (cannonball.xValue+100) > dino.xValue && cannonball.xValue < dino.xValue && dino.yValue > cannonball.yValue) {
+            dino.xValue -= 250;
+            score++;
+            resetBall();
+        }
+        if ((cannonball.yValue + 100) > dino.yValue && (cannonball.xValue+100) > (dino.xValue+200) && cannonball.xValue < (dino.xValue+200) && dino.yValue > cannonball.yValue) {
+            dino.xValue -= 250;
+            score++;
+            resetBall();
+        }
+        if ((cannonball.yValue + 100) > (dino.yValue+200) && (cannonball.xValue+100) > (dino.xValue+200) && cannonball.xValue < (dino.xValue+200) && (dino.yValue+200) > cannonball.yValue) {
+            dino.xValue -= 250;
+            score++;
+            resetBall();
+        }
+        if ((cannonball.yValue + 100) > dino.yValue && (cannonball.xValue+100) > dino.xValue && cannonball.xValue < dino.xValue && (dino.yValue+200) > cannonball.yValue) {
+            dino.xValue -= 250;
+            score++;
+            resetBall();
         }
 
         //animate
@@ -120,8 +156,23 @@ public class GameView extends View {
             dino.xValue = 0;
         }
 
+        //return when ball passes screen
+        if (cannonball.xValue + 120 < 0) {
+            resetBall();
+        }
+        if (cannonball.yValue > canvas.getHeight()) {
+            resetBall();
+        }
 
         canvas.restore();
+    }
+
+    private void resetBall() {
+        cannonball.xValue = cannonball.initX;
+        cannonball.yValue = cannonball.initY;
+        cannonball.yVelocity = 0;
+        cannonball.xVelocity = 0;
+        loaded = true;
     }
 
     public void releaseBow(float x, float y) {
@@ -129,8 +180,8 @@ public class GameView extends View {
         float avgY = (y + storedY) / 2;
         float deltaX = storedX - x;
         float avgX = (x + storedX) / 2;
-        deltaY %= 50;
-        deltaX %= 50;
+        deltaY /= 50;
+        deltaX /= 50;
         cannonball.yVelocity = -deltaY;
         cannonball.xVelocity = -deltaX;
     }
