@@ -81,13 +81,6 @@ public class GameActivity extends AppCompatActivity {
         //moveEnemy(mTRex);
     }
 
-//    @Override
-//    protected void onResume(){
-//        super.onResume();
-//
-//        moveEnemy(mTRex);
-//    }
-
     private void drawSomething() {
         int vWidth = 1000;
         int vHeight = 1000;
@@ -143,7 +136,7 @@ public class GameActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
         builder.setMessage("Scores: "
                 + "\nYour Score: " + Integer.toString(enemiesKilled)
-                + "\nHigh Score: " + "9999999999")
+                + "\nHigh Score: " + Integer.toString(mHighScore.getInt(mPrefKey, 0)))
                 .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         finish();
@@ -154,6 +147,14 @@ public class GameActivity extends AppCompatActivity {
 
     public Dialog createGameOverDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+
+        // if current score is larger than previous high score, set current score as high score
+        if (enemiesKilled > mHighScoreInt) {
+            SharedPreferences.Editor editor = mHighScore.edit();
+            editor.putInt(mPrefKey, enemiesKilled);
+            editor.commit();
+        }
+
         builder.setMessage(R.string.game_over)
                 .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
