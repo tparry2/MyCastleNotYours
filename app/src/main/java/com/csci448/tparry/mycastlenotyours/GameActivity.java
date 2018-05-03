@@ -95,7 +95,7 @@ public class GameActivity extends AppCompatActivity {
         Path arrowPath = new Path();
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.CYAN);
+        paint.setColor(Color.RED);
 
 
         //mTRexBitmap = Bitmap.createBitmap(mTRex.getWidth(), mTRex.getHeight(), Bitmap.Config.ARGB_8888);
@@ -109,6 +109,8 @@ public class GameActivity extends AppCompatActivity {
         });
         tRexPath.moveTo(mTRex.getX() + 200, mTRex.getY());
         tRexPath.lineTo(mTRex.getX() + 200, mTRex.getY());
+        tRexPath.setFillType(Path.FillType.EVEN_ODD);
+        mTRexCanvas.drawPath(tRexPath, paint);
         mArrowImage.post(new Runnable() {
             @Override
             public void run() {
@@ -116,6 +118,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
         mTRexCanvas.drawPath(tRexPath, paint);
+        loadBitmapFromView(mTRex, mTRexCanvas).setWidth(10);
         mTRexCanvas.drawTextOnPath("HERE", tRexPath, 0, 0, paint);
 
         Log.i("GameActivity", "drawSomething()");
@@ -161,30 +164,30 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
-//        PointF current = new PointF(event.getX(), event.getY());
-//        String action = "";
-//
-//        switch (event.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//                if(hasReleasedArrow) {
-//                    action = "ACTION_DOWN";
-//                    x2 = current.x;
-//                    y2 = current.y;
-//                }
-//                else action = "Not released yet";
-//                hasReleasedArrow = false;
-//                break;
-//
-//            case MotionEvent.ACTION_UP:
-//                action = "ACTION_UP";
-//                x1 = current.x - 1569;
-//                y1 = current.y - 790;
-//                releaseArrow(x1, y1, x2, y2);
-//                hasReleasedArrow = true;
-//                break;
-//        }
-//
-//        Log.i("GameActivity", action + " at x=" + current.x + ", y=" + current.y);
+        PointF current = new PointF(event.getX(), event.getY());
+        String action = "";
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if(hasReleasedArrow) {
+                    action = "ACTION_DOWN";
+                    x2 = current.x;
+                    y2 = current.y;
+                }
+                else action = "Not released yet";
+                hasReleasedArrow = false;
+                break;
+
+            case MotionEvent.ACTION_UP:
+                action = "ACTION_UP";
+                x1 = current.x - 1569;
+                y1 = current.y - 790;
+                //releaseArrow(x1, y1, x2, y2);
+                hasReleasedArrow = true;
+                break;
+        }
+
+        Log.i("GameActivity", action + " at x=" + current.x + ", y=" + current.y);
         return true;
 
     }
