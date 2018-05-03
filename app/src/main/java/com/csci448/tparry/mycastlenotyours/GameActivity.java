@@ -127,16 +127,11 @@ public class GameActivity extends AppCompatActivity {
         return b;
     }
 
-    private void collisionDetection() {
-        //STUB
-    }
-
-
     public Dialog createHighScoreDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
         builder.setMessage("Scores: "
                 + "\nYour Score: " + Integer.toString(enemiesKilled)
-                + "\nHigh Score: " + Integer.toString(mHighScore.getInt(mPrefKey, 0)))
+                + "\nHigh Score: " + Integer.toString(mHighScoreInt))
                 .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         finish();
@@ -150,8 +145,9 @@ public class GameActivity extends AppCompatActivity {
 
         // if current score is larger than previous high score, set current score as high score
         if (enemiesKilled > mHighScoreInt) {
+            mHighScoreInt = enemiesKilled;
             SharedPreferences.Editor editor = mHighScore.edit();
-            editor.putInt(mPrefKey, enemiesKilled);
+            editor.putInt(mPrefKey, mHighScoreInt);
             editor.commit();
         }
 
