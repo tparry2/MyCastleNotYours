@@ -111,8 +111,6 @@ public class GameView extends View {
         if (dino.yValue == 0) {
             dino.yValue = canvas.getHeight() - 300;
         }
-        canvas.drawBitmap(dino.image, dino.xValue, dino.yValue, null);
-        dino.xValue += 5;
         //moving cannonball
         if (cannonball.xValue == 0 && cannonball.yValue == 0) {
             cannonball.xValue = canvas.getWidth() - 360;
@@ -152,10 +150,13 @@ public class GameView extends View {
         //animate
         this.postInvalidateDelayed(1000/ fps);
 
+        //when dino reaches castle, it should stop and start attacking castle
         if (dino.xValue >= canvas.getWidth() - 700) {
-            dino.xValue = 0;
+            dino.speed = 0;
+            //canvas.rotate(1);
         }
-
+        canvas.drawBitmap(dino.image, dino.xValue, dino.yValue, null);
+        dino.xValue += dino.speed;
         //return when ball passes screen
         if (cannonball.xValue + 120 < 0) {
             resetBall();

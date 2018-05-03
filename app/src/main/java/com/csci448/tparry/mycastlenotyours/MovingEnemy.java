@@ -10,10 +10,12 @@ public class MovingEnemy {
     public Bitmap image;
     public int xValue;
     public int yValue;
+    public int speed;
 
     public MovingEnemy(Bitmap i) {
         image = i;
         xValue = 0;
         yValue = 0;
+        speed = 5;
     }
 }
