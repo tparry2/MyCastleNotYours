@@ -11,6 +11,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+
 /**
  * Created by Owner on 4/26/2018.
  */
@@ -28,10 +30,13 @@ public class GameView extends View {
     private boolean loaded = true;
     //pictures
     private Bitmap castle;
+    private int castleHealth;
     private Bitmap moon;
     private Bitmap catapult;
     // moving objects
     private MovingEnemy dino;
+    private ArrayList<MovingEnemy> enemies;
+    private int damageCounter = 0;
     private MovingCannonball cannonball;
     // animation specifications
     private int fps = 60;
@@ -55,6 +60,7 @@ public class GameView extends View {
         Resources res = getResources();
         castle = BitmapFactory.decodeResource(res, R.drawable.castle);
         castle = resizeBitmap(castle, 550, 650);
+        castleHealth = 100;
         moon = BitmapFactory.decodeResource(res, R.drawable.moon);
         moon = resizeBitmap(moon, 350, 350);
         catapult = BitmapFactory.decodeResource(res, R.drawable.catapult_);
@@ -63,6 +69,7 @@ public class GameView extends View {
         Bitmap dinoImage = BitmapFactory.decodeResource(res, R.drawable.tyrannosaurus);
         dinoImage = resizeBitmap(dinoImage, 250, 260);
         dino = new MovingEnemy(dinoImage);
+        //enemies.add(dino);
         //cannonball setup
         Bitmap ballImage = BitmapFactory.decodeResource(res, R.drawable.cannonball);
         ballImage = resizeBitmap(ballImage, 120, 120);
@@ -104,6 +111,9 @@ public class GameView extends View {
         canvas.drawRect((float)0.0, canvas.getHeight() / 2, canvas.getWidth(), canvas.getHeight(), groundPaint);
         //draw score
         canvas.drawText("Score: " + String.valueOf(score), 20, 100, scorePaint);
+        //draw health
+        //canvas.drawText("Health: " + String.valueOf(castleHealth), canvas.getWidth() - 650, canvas.getHeight() - 700, scorePaint);
+        canvas.drawRect(canvas.getWidth() - 650, canvas.getHeight() - 700, canvas.getWidth() - (100 + (700 - (700 * (castleHealth/100)))), canvas.getHeight() - 650, groundPaint);
         //draw back objects
         canvas.drawBitmap(castle,canvas.getWidth() - 700, canvas.getHeight()-600, null);
         canvas.drawBitmap(moon, 0, 110, null);
@@ -154,6 +164,17 @@ public class GameView extends View {
         if (dino.xValue >= canvas.getWidth() - 700) {
             dino.speed = 0;
             //canvas.rotate(1);
+            //damage castle
+            damageCounter--;
+            if (damageCounter <= 0) {
+                castleHealth--;
+                damageCounter = 50;
+                //when health reaches zero end game
+            }
+        }
+        else {
+            dino.speed = 5;
+            damageCounter = 0;
         }
         canvas.drawBitmap(dino.image, dino.xValue, dino.yValue, null);
         dino.xValue += dino.speed;
@@ -181,8 +202,8 @@ public class GameView extends View {
         float avgY = (y + storedY) / 2;
         float deltaX = storedX - x;
         float avgX = (x + storedX) / 2;
-        deltaY /= 50;
-        deltaX /= 50;
+        deltaY /= 30;
+        deltaX /= 30;
         cannonball.yVelocity = -deltaY;
         cannonball.xVelocity = -deltaX;
     }
