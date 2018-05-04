@@ -70,6 +70,12 @@
                 android:layout_gravity="right|center"
                 android:src="@drawable/catapult_" />
 
+            <Button
+                android:id="@+id/start_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start"
+                android:layout_gravity="center_horizontal"/>
 
 
         </FrameLayout>
@@ -80,10 +86,9 @@
         android:id="@+id/arrow"
         android:layout_width="75dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="88dp"
-        android:layout_marginRight="35dp"
-
-        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="55dp"
+        android:layout_marginRight="62dp"
+        android:layout_gravity="center"
         android:src="@drawable/cannonball"/>
 
     <ImageView
