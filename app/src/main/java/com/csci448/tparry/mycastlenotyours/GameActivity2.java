@@ -12,4 +12,5 @@ public class GameActivity2 extends SingleFragmentActivity {
     protected Fragment createFragment() {
         return GameFragment.newInstance();
     }
+
 }

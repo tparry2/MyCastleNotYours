@@ -1,12 +1,19 @@
 package com.csci448.tparry.mycastlenotyours;
 
+import android.app.Dialog;
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +27,8 @@ import java.util.ArrayList;
 public class GameView extends View {
     //score
     private int score = 0;
+    private int mHighScoreInt;
+    private SharedPreferences mHighScore;
     private Paint scorePaint;
     private Paint backgroundPaint;
     private Paint groundPaint;
@@ -42,6 +51,7 @@ public class GameView extends View {
     private int fps = 60;
     private long animationDuration = 10000;
     private long startTime;
+    private boolean isGameOver = false;
 
     public GameView(Context context) {
         this(context, null);
@@ -112,8 +122,8 @@ public class GameView extends View {
         //draw score
         canvas.drawText("Score: " + String.valueOf(score), 20, 100, scorePaint);
         //draw health
-        //canvas.drawText("Health: " + String.valueOf(castleHealth), canvas.getWidth() - 650, canvas.getHeight() - 700, scorePaint);
-        canvas.drawRect(canvas.getWidth() - 650, canvas.getHeight() - 700, canvas.getWidth() - (100 + (700 - (700 * (castleHealth/100)))), canvas.getHeight() - 650, groundPaint);
+        canvas.drawText("Health: " + String.valueOf(castleHealth), canvas.getWidth() - 550, 100, scorePaint);
+        //canvas.drawRect(canvas.getWidth() - 650, canvas.getHeight() - 700, canvas.getWidth() - (100 + (700 - (700 * (castleHealth/100)))), canvas.getHeight() - 650, groundPaint);
         //draw back objects
         canvas.drawBitmap(castle,canvas.getWidth() - 700, canvas.getHeight()-600, null);
         canvas.drawBitmap(moon, 0, 110, null);
@@ -158,7 +168,9 @@ public class GameView extends View {
         }
 
         //animate
-        this.postInvalidateDelayed(1000/ fps);
+        if(!isGameOver) {
+            this.postInvalidateDelayed(1000 / fps);
+        }
 
         //when dino reaches castle, it should stop and start attacking castle
         if (dino.xValue >= canvas.getWidth() - 700) {
@@ -167,13 +179,19 @@ public class GameView extends View {
             //damage castle
             damageCounter--;
             if (damageCounter <= 0) {
-                castleHealth--;
+                castleHealth -= 5;
+                if (castleHealth <= 0) {
+                    Dialog gameOver = createGameOverDialog();
+                    gameOver.show();
+                    isGameOver = true;
+                }
+
                 damageCounter = 50;
                 //when health reaches zero end game
             }
         }
         else {
-            dino.speed = 5;
+            dino.speed = 8;
             damageCounter = 0;
         }
         canvas.drawBitmap(dino.image, dino.xValue, dino.yValue, null);
@@ -219,4 +237,62 @@ public class GameView extends View {
         old.recycle();
         return resized;
     }
+
+    public Dialog createGameOverDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+        mHighScore = getContext().getSharedPreferences("High_Score", Context.MODE_PRIVATE);
+        mHighScoreInt = mHighScore.getInt("High_Score", 0);
+
+        // if current score is larger than previous high score, set current score as high score
+        if (score > mHighScoreInt) {
+            mHighScoreInt = score;
+            SharedPreferences.Editor editor = mHighScore.edit();
+            editor.putInt("High_Score", mHighScoreInt);
+            editor.commit();
+        }
+        if (score < 5){
+            builder.setMessage(R.string.zeroto5)
+                    .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent i = new Intent(getContext(), TitleActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            getContext().startActivity(i);
+                        }
+                    });
+        }
+        else if (score < 10) {
+            builder.setMessage(R.string.fiveto10)
+                    .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent i = new Intent(getContext(), TitleActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            getContext().startActivity(i);
+                        }
+                    });
+        }
+        else if (score < 15) {
+            builder.setMessage(R.string.tento15)
+                    .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent i = new Intent(getContext(), TitleActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            getContext().startActivity(i);
+                        }
+                    });
+        }
+        else {
+            builder.setMessage(R.string.morethan15)
+                    .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent i = new Intent(getContext(), TitleActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            getContext().startActivity(i);
+                        }
+                    });
+        }
+
+
+        return builder.create();
+    }
+
 }

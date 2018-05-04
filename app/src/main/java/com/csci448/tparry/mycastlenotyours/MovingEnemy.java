@@ -14,8 +14,8 @@ public class MovingEnemy {
 
     public MovingEnemy(Bitmap i) {
         image = i;
-        xValue = -1000;
+        xValue = -800;
         yValue = 0;
-        speed = 5;
+        speed = 8;
     }
 }

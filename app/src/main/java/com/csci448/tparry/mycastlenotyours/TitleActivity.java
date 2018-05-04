@@ -19,6 +19,7 @@ public class TitleActivity extends AppCompatActivity {
     private Button mExitButton;
 
     private SharedPreferences mHighScore;
+    private int mHighScoreInt;
     private String mPrefKey = "High_Score";
 
     @Override
@@ -28,12 +29,14 @@ public class TitleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_title);
 
         mHighScore = this.getSharedPreferences(mPrefKey, Context.MODE_PRIVATE);
+        mHighScoreInt = mHighScore.getInt(mPrefKey, 0);
+
 
         mStartButton = (Button) findViewById(R.id.start_button);
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(TitleActivity.this, GameActivity.class);
+                Intent i = new Intent(TitleActivity.this, GameActivity2.class);
                 startActivity(i);
             }
         });

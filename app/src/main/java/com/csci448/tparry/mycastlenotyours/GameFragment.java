@@ -23,25 +23,15 @@ public class GameFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup containter, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_game, containter, false);
-        Button b = new Button(this.getActivity());
-        b.setText("Back");
         FrameLayout.LayoutParams lay = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT);
         //lay.gravity = FrameLayout.Layout
         //lay.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         lay.gravity = Gravity.RIGHT;
         lay.setMargins(50,50,50,50);
-        b.setLayoutParams(lay);
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), StartActivity.class);
-                startActivity(intent);
-            }
-        });
+
         FrameLayout mContainer = new FrameLayout(getActivity());
         mContainer.addView(v);
-        mContainer.addView(b);
         return mContainer;
     }
 }
